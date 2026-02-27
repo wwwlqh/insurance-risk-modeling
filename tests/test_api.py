@@ -15,7 +15,7 @@ SAMPLE_PAYLOAD = {
     "urbanization_level": "Urban",
     "policy_term": 10,
     "claim_frequency": 2,
-    "maintenance_level": "Medium",
+    "maintenance_level": "Moderate",
     "building_age": 15,
     "customer_satisfaction": 4,
     "has_security_system": "Yes",
