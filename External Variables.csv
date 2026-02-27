@@ -1,0 +1,11 @@
+State,Population_Density,Average_Household_Income,Education_Index,Unemployment_Rate,Urbanization_Rate,Average_Annual_Rainfall,Coastal_Exposure,Median_Property_Age
+Selangor,900,110000,5,3.1,91,2500,No,18
+Kuala Lumpur,7500,130000,5,2.9,100,2600,No,20
+Johor,400,95000,4,3.6,78,2400,Yes,22
+Penang,1600,105000,5,3,93,2700,Yes,21
+Sabah,100,80000,3,4.8,60,3200,Yes,24
+Sarawak,90,82000,3,4.5,55,3100,Yes,25
+Perak,280,85000,4,4.1,65,2600,No,27
+Negeri Sembilan,250,87000,4,3.9,70,2500,No,26
+Kedah,200,78000,3,4.7,58,2800,No,28
+Pahang,150,80000,3,4.4,56,3000,Yes,29
