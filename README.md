@@ -47,10 +47,10 @@ Everything installs automatically. Then run:
 
 ```bash
 # Terminal 1 — start API
-uvicorn app.main:app --reload --port 8000
+python3 -m uvicorn app.main:app --reload --port 8000
 
 # Terminal 2 — start dashboard
-streamlit run streamlit_app/app.py
+python3 -m streamlit run streamlit_app/app.py
 ```
 
 ---
