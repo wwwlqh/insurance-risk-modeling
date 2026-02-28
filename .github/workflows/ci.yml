@@ -82,22 +82,8 @@ jobs:
 
       - name: Add HF Space yaml header to README
         run: |
-          python3 - <<'EOF'
-          header = """---
-title: Insurance Risk API
-emoji: \U0001f3e0
-colorFrom: blue
-colorTo: green
-sdk: docker
-pinned: false
----
-
-"""
-          with open("README.md") as f:
-              content = f.read()
-          with open("README.md", "w") as f:
-              f.write(header + content)
-          EOF
+          printf '%s\n' '---' 'title: Insurance Risk API' 'emoji: 🏠' 'colorFrom: blue' 'colorTo: green' 'sdk: docker' 'pinned: false' '---' '' | cat - README.md > README_hf.md
+          mv README_hf.md README.md
 
       - name: Commit and push to HF API Space
         env:
@@ -128,25 +114,11 @@ pinned: false
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
-      - name: Prepare Streamlit deploy (swap Dockerfile + add yaml header)
+      - name: Prepare Streamlit deploy
         run: |
           cp Dockerfile.streamlit Dockerfile
-          python3 - <<'EOF'
-          header = """---
-title: Insurance Risk Dashboard
-emoji: \U0001f4ca
-colorFrom: blue
-colorTo: green
-sdk: docker
-pinned: false
----
-
-"""
-          with open("README.md") as f:
-              content = f.read()
-          with open("README.md", "w") as f:
-              f.write(header + content)
-          EOF
+          printf '%s\n' '---' 'title: Insurance Risk Dashboard' 'emoji: 📊' 'colorFrom: blue' 'colorTo: green' 'sdk: docker' 'pinned: false' '---' '' | cat - README.md > README_hf.md
+          mv README_hf.md README.md
 
       - name: Commit and push to HF Streamlit Space
         env:
