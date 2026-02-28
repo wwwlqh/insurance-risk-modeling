@@ -61,38 +61,98 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # ── 3. Push to Docker Hub (on push to main only) ───────────────────────────
-  # Uncomment this job and add DOCKERHUB_USERNAME + DOCKERHUB_TOKEN to
-  # GitHub repo Settings → Secrets and variables → Actions
-  #
-  # docker-push:
-  #   name: Push to Docker Hub
-  #   runs-on: ubuntu-latest
-  #   needs: docker-build
-  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-  #
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v4
-  #
-  #     - name: Log in to Docker Hub
-  #       uses: docker/login-action@v3
-  #       with:
-  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
-  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
-  #
-  #     - name: Build and push API image
-  #       uses: docker/build-push-action@v5
-  #       with:
-  #         context: .
-  #         file: ./Dockerfile
-  #         push: true
-  #         tags: ${{ secrets.DOCKERHUB_USERNAME }}/insurance-risk-api:latest
-  #
-  #     - name: Build and push Streamlit image
-  #       uses: docker/build-push-action@v5
-  #       with:
-  #         context: .
-  #         file: ./Dockerfile.streamlit
-  #         push: true
-  #         tags: ${{ secrets.DOCKERHUB_USERNAME }}/insurance-risk-streamlit:latest
+  # ── 3. Deploy API to Hugging Face Spaces ──────────────────────────────────
+  deploy-api:
+    name: Deploy API to Hugging Face
+    runs-on: ubuntu-latest
+    needs: [test, docker-build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code (with LFS for models)
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+          fetch-depth: 1
+
+      - name: Configure Git
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Add HF Space yaml header to README
+        run: |
+          python3 - <<'EOF'
+          header = """---
+title: Insurance Risk API
+emoji: \U0001f3e0
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
+"""
+          with open("README.md") as f:
+              content = f.read()
+          with open("README.md", "w") as f:
+              f.write(header + content)
+          EOF
+
+      - name: Commit and push to HF API Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git add README.md
+          git commit -m "ci: auto-deploy to HF Space"
+          git remote add hf https://wwwlqh:${HF_TOKEN}@huggingface.co/spaces/wwwlqh/insurance-risk-api
+          git lfs push hf HEAD
+          git push hf HEAD:main --force
+
+  # ── 4. Deploy Dashboard to Hugging Face Spaces ────────────────────────────
+  deploy-streamlit:
+    name: Deploy Dashboard to Hugging Face
+    runs-on: ubuntu-latest
+    needs: [test, docker-build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+          fetch-depth: 1
+
+      - name: Configure Git
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Prepare Streamlit deploy (swap Dockerfile + add yaml header)
+        run: |
+          cp Dockerfile.streamlit Dockerfile
+          python3 - <<'EOF'
+          header = """---
+title: Insurance Risk Dashboard
+emoji: \U0001f4ca
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
+"""
+          with open("README.md") as f:
+              content = f.read()
+          with open("README.md", "w") as f:
+              f.write(header + content)
+          EOF
+
+      - name: Commit and push to HF Streamlit Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git add Dockerfile README.md
+          git commit -m "ci: auto-deploy to HF Space"
+          git remote add hf https://wwwlqh:${HF_TOKEN}@huggingface.co/spaces/wwwlqh/insurance-risk-streamlit
+          git push hf HEAD:main --force

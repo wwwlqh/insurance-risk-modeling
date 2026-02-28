@@ -1,6 +1,57 @@
 # Insurance Risk Modeling
 
+[![CI](https://github.com/wwwlqh/insurance-risk-modeling/actions/workflows/ci.yml/badge.svg)](https://github.com/wwwlqh/insurance-risk-modeling/actions/workflows/ci.yml)
+[![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm.svg)](https://huggingface.co/spaces/wwwlqh/insurance-risk-streamlit)
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/wwwlqh/insurance-risk-modeling)
+
 A machine learning system that predicts property insurance risk and expected claim costs, served via a FastAPI REST API and an interactive Streamlit dashboard — all containerized with Docker.
+
+---
+
+## Live Demo
+
+| Service | URL |
+|---------|-----|
+| Streamlit Dashboard | https://huggingface.co/spaces/wwwlqh/insurance-risk-streamlit |
+| FastAPI Docs | https://wwwlqh-insurance-risk-api.hf.space/docs |
+
+---
+
+## Deploy Your Own Copy
+
+### Option 1 — Hugging Face Spaces (free)
+
+1. Fork this repo on GitHub
+2. Create two Spaces on [huggingface.co/new-space](https://huggingface.co/new-space) — both with **Docker** SDK
+3. Add your HF token as a GitHub secret named `HF_TOKEN`
+4. Update the Space names in `.github/workflows/ci.yml`
+5. Push to `main` — GitHub Actions will deploy automatically
+
+### Option 2 — Run locally with Docker
+
+```bash
+git clone https://github.com/wwwlqh/insurance-risk-modeling
+cd insurance-risk-modeling
+docker compose up --build
+```
+
+| Service | URL |
+|---------|-----|
+| Streamlit Dashboard | http://localhost:8501 |
+| FastAPI Docs | http://localhost:8000/docs |
+
+### Option 3 — GitHub Codespaces (zero setup)
+
+Click the green **Code** button on GitHub → **Codespaces** → **Create codespace on main**.
+Everything installs automatically. Then run:
+
+```bash
+# Terminal 1 — start API
+uvicorn app.main:app --reload --port 8000
+
+# Terminal 2 — start dashboard
+streamlit run streamlit_app/app.py
+```
 
 ---
 
