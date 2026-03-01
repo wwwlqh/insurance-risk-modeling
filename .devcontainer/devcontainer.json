@@ -2,7 +2,7 @@
   "name": "Insurance Risk Modeling",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
 
-  "postCreateCommand": "python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt -r requirements-streamlit.txt pytest httpx && echo 'source /workspaces/insurance-risk-modeling/venv/bin/activate' >> ~/.bashrc",
+  "postCreateCommand": "pip install -r requirements.txt -r requirements-streamlit.txt pytest httpx",
 
   "forwardPorts": [8000, 8501],
   "portsAttributes": {
@@ -10,16 +10,11 @@
     "8501": { "label": "Streamlit", "onAutoForward": "notify" }
   },
 
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-  },
-
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
-        "ms-python.vscode-pylance",
-        "ms-azuretools.vscode-docker"
+        "ms-python.vscode-pylance"
       ]
     }
   }
