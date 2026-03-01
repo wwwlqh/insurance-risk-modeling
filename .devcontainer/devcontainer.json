@@ -2,7 +2,7 @@
   "name": "Insurance Risk Modeling",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
 
-  "postCreateCommand": "pip install -r requirements.txt -r requirements-streamlit.txt pytest httpx",
+  "postCreateCommand": "git lfs install && git lfs pull && pip install -r requirements.txt -r requirements-streamlit.txt pytest httpx",
 
   "forwardPorts": [8000, 8501],
   "portsAttributes": {
