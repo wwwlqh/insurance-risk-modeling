@@ -2,6 +2,10 @@
   "name": "Insurance Risk Modeling",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
 
+  "features": {
+    "ghcr.io/devcontainers/features/git-lfs:1": {}
+  },
+
   "postCreateCommand": "git lfs install && git lfs pull && pip install -r requirements.txt -r requirements-streamlit.txt pytest httpx",
 
   "forwardPorts": [8000, 8501],
