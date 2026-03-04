@@ -1,9 +1,43 @@
+# requirements.txt — Python packages needed for the FastAPI backend
+# ==================================================================
+# This file lists every Python library the API needs to run.
+# Install all of them at once with: pip install -r requirements.txt
+#
+# We pin exact versions (==) to ensure the app runs the same way
+# on every machine and every deployment. If you use different versions,
+# the model files might be incompatible (they were saved with these exact versions).
+
+# FastAPI — the web framework for building the API
+# Handles routing (which function runs for which URL), validation, and docs
 fastapi==0.111.0
+
+# Uvicorn — the web server that runs FastAPI
+# FastAPI defines the app logic; Uvicorn handles the actual HTTP connections
+# [standard] includes extras like websocket support and faster performance
 uvicorn[standard]==0.29.0
+
+# Pydantic — data validation library used by FastAPI
+# Automatically validates that input data matches the expected types and rules
 pydantic==2.7.1
+
+# Scikit-learn — machine learning library
+# Used to load the trained Random Forest classifier and StandardScaler
+# MUST match the version used when training, otherwise models won't load
 scikit-learn==1.8.0
-xgboost==2.0.3
+
+# NumPy — numerical computing library
+# Used for array operations (e.g. reshape, expm1)
+# MUST match training version — numpy changed its random number format in v2.x
 numpy==2.4.2
+
+# Pandas — data manipulation library
+# Used to create DataFrames for preprocessing input before prediction
 pandas==2.2.2
+
+# Joblib — saving and loading Python objects (like models and scalers)
+# joblib.load() reads the .joblib files in the models/ folder
 joblib==1.4.2
+
+# Python-multipart — required by FastAPI to handle form data uploads
+# Without this, FastAPI raises an error when processing certain request types
 python-multipart==0.0.9
