@@ -1,5 +1,5 @@
 """
-Mirrors the preprocessing pipeline from notebook.ipynb:
+Mirrors the preprocessing pipeline from notebooks/notebook.ipynb:
   1. Label encode categorical features  (same LabelEncoders, fitted with .astype(str))
   2. Combine flood + crime → Area_Risk_Index
   3. log1p transform skewed columns
@@ -10,12 +10,13 @@ Mirrors the preprocessing pipeline from notebook.ipynb:
 import numpy as np
 import pandas as pd
 import joblib
+from app.paths import MODELS_DIR
 
 # ── Load saved artifacts once at import time ─────────────────────────────────
-_scaler_X       = joblib.load("models/scaler_X.joblib")
-_label_encoders = joblib.load("models/label_encoders.joblib")
-_scale_features = joblib.load("models/scale_features.joblib")
-_feature_order  = joblib.load("models/feature_order.joblib")
+_scaler_X = joblib.load(MODELS_DIR / "scaler_X.joblib")
+_label_encoders = joblib.load(MODELS_DIR / "label_encoders.joblib")
+_scale_features = joblib.load(MODELS_DIR / "scale_features.joblib")
+_feature_order = joblib.load(MODELS_DIR / "feature_order.joblib")
 
 # Categorical columns that need label encoding (exclude targets + dropped cols)
 _ENCODE_COLS = [

@@ -1,6 +1,7 @@
 """
 Basic API tests — run with: pytest tests/
-Requires models/ folder to exist (run save_models.py first).
+CI mocks model artifacts in tests/conftest.py, so real joblib files are not
+required for the API contract tests.
 """
 
 from fastapi.testclient import TestClient

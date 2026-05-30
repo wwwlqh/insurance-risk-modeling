@@ -1,23 +1,28 @@
 """
 Quick sanity check — run this to verify all saved joblib files work.
-Usage: python test_models.py
+Usage: python scripts/check_models.py
 """
+
+from pathlib import Path
 
 import joblib
 import numpy as np
 import pandas as pd
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+MODELS_DIR = PROJECT_ROOT / "models"
+
 print("=" * 50)
 print("1. Loading saved artifacts...")
 print("=" * 50)
 
-rf             = joblib.load("models/rf_classifier.joblib")
-gb             = joblib.load("models/gb_regressor.joblib")
-scaler_X       = joblib.load("models/scaler_X.joblib")
-scaler_y       = joblib.load("models/scaler_y.joblib")
-label_encoders = joblib.load("models/label_encoders.joblib")
-scale_features = joblib.load("models/scale_features.joblib")
-feature_order  = joblib.load("models/feature_order.joblib")
+rf = joblib.load(MODELS_DIR / "rf_classifier.joblib")
+gb = joblib.load(MODELS_DIR / "gb_regressor.joblib")
+scaler_X = joblib.load(MODELS_DIR / "scaler_X.joblib")
+scaler_y = joblib.load(MODELS_DIR / "scaler_y.joblib")
+label_encoders = joblib.load(MODELS_DIR / "label_encoders.joblib")
+scale_features = joblib.load(MODELS_DIR / "scale_features.joblib")
+feature_order = joblib.load(MODELS_DIR / "feature_order.joblib")
 
 print("All files loaded successfully.")
 print(f"  Feature order ({len(feature_order)} cols): {feature_order}")
@@ -107,7 +112,7 @@ df = pd.DataFrame([row])[feature_order]
 
 # Scale
 df[scale_features] = scaler_X.transform(df[scale_features])
-X = df.values
+X = df
 
 print(f"\n  Final feature array shape: {X.shape}")
 

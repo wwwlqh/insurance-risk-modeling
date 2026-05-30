@@ -11,16 +11,17 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.schemas import InsuranceInput, ClassificationResponse, RegressionResponse
 from app.preprocess import preprocess
+from app.paths import MODELS_DIR
 
 # ── Load models once at startup ────────────────────────────────────────────────
 try:
-    _clf     = joblib.load("models/rf_classifier.joblib")
-    _reg     = joblib.load("models/gb_regressor.joblib")
-    _scaler_y = joblib.load("models/scaler_y.joblib")
+    _clf = joblib.load(MODELS_DIR / "rf_classifier.joblib")
+    _reg = joblib.load(MODELS_DIR / "gb_regressor.joblib")
+    _scaler_y = joblib.load(MODELS_DIR / "scaler_y.joblib")
 except FileNotFoundError as e:
     raise RuntimeError(
         f"Model file not found: {e}. "
-        "Run `python save_models.py` first to generate the models/ folder."
+        "Run the training notebook to generate the models/ folder."
     )
 
 # ── App ────────────────────────────────────────────────────────────────────────

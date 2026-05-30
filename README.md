@@ -76,10 +76,14 @@ python3 -m streamlit run streamlit_app/app.py
 Insurance Risk Modeling/
 ├── app/                        # FastAPI backend
 │   ├── main.py                 # API endpoints
+│   ├── paths.py                # Project-local filesystem paths
 │   ├── schemas.py              # Pydantic request/response models
 │   └── preprocess.py           # Feature engineering pipeline
 ├── streamlit_app/
 │   └── app.py                  # Streamlit dashboard
+├── data/                       # Source datasets
+│   ├── Property Insurance.csv
+│   └── External Variables.csv
 ├── models/                     # Saved model artifacts (joblib)
 │   ├── rf_classifier.joblib
 │   ├── gb_regressor.joblib
@@ -90,15 +94,17 @@ Insurance Risk Modeling/
 │   └── feature_order.joblib
 ├── tests/
 │   └── test_api.py             # Pytest API tests
+├── notebooks/
+│   └── notebook.ipynb          # Full ML pipeline notebook
+├── scripts/
+│   └── check_models.py         # Model artifact sanity check
 ├── .github/workflows/
 │   └── ci.yml                  # GitHub Actions CI/CD
-├── notebook.ipynb              # Full ML pipeline notebook
 ├── Dockerfile                  # API container
 ├── Dockerfile.streamlit        # Streamlit container
 ├── docker-compose.yml          # Orchestration
 ├── requirements.txt            # API dependencies
-├── requirements-streamlit.txt  # Streamlit dependencies
-└── test_models.py              # Model sanity check script
+└── requirements-streamlit.txt  # Streamlit dependencies
 ```
 
 ---
@@ -184,6 +190,9 @@ Predicts the **expected claim cost** in original dollar scale.
 ```bash
 pip install -r requirements.txt pytest httpx
 pytest tests/ -v
+
+# Optional: verify saved joblib artifacts
+python scripts/check_models.py
 ```
 
 ---
@@ -219,5 +228,5 @@ streamlit run streamlit_app/app.py
 
 ## Dataset
 
-- `Property Insurance.csv` — policyholder and property features
-- `External Variables.csv` — external risk indices (flood, crime, fire)
+- `data/Property Insurance.csv` — policyholder and property features
+- `data/External Variables.csv` — external risk indices (flood, crime, fire)
